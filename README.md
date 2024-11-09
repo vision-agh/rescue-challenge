@@ -75,9 +75,10 @@ Należy pamiętać, aby po zbudowaniu wywołać komendę lub pracować w nowym t
 > /home/developer/ros2_ws/install/setup.bash
 > ```
 
-## Przykład
-1. Zbuduj obszar roboczy wraz z simple_example package.  
-2. Uruchom launcha `example.launch.py`, pokazujący, w jaki sposób należy połączyć Gazebo z ROS 2, aby możliwa była wzajemna komunikacja.
+## Uruchomienie lotu drona po kwadracie
+1. Zbuduj obszar roboczy wywołując: ./buils.sh w localization ~/ros2_ws.
+2. Następnie: source install/setup.bash
+3. Uruchom lot drona po kwadracie wywołując polecenie: ros2 launch simple_flight x500.launch.py
 
 
 ## Dodatkowe materiały

@@ -76,7 +76,7 @@ Należy pamiętać, aby po zbudowaniu wywołać komendę lub pracować w nowym t
 > ```
 
 ## Uruchomienie lotu drona po kwadracie
-1. Zbuduj obszar roboczy wywołując: ./buils.sh w localization ~/ros2_ws.
+1. Zbuduj obszar roboczy wywołując: ./build.sh w localization ~/ros2_ws.
 2. Następnie: source install/setup.bash
 3. Uruchom lot drona po kwadracie wywołując polecenie: ros2 launch simple_flight x500.launch.py
 

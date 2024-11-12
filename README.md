@@ -1,88 +1,86 @@
-# ROS 2 + Gazebo Harmonic + Px4 docker
+# Lake Rescue Challenge: ROS2 Humble
 
-Repozytorium zawiera docker z ROS 2 Humble, Gazebo Harmonic oraz Px4
+![Drone over lake image](/images/uav_lake.jpeg)
 
-## Wymagania
+## About the Challenge
+
+The Lake Rescue Challenge simulates a rescue mission where a UAV (Unmanned Aerial Vehicle) assists search and rescue teams in locating stranded individuals on a lake. Participants must pilot the drone to find people scattered across the mission area and relay their precise locations. Using ROS 2 Humble, participants are tasked with meeting strict criteria for accuracy, speed, and data reporting.
+
+## Scoring System
+
+The maximum achievable score is **100 points**. Points are awarded based on the following four criteria:
+
+### 1. Number of Points Visited (40 Points)
+
+Coordinates of target points in 3D space will be published on the `/avader/locations_to_visit` topic with `geometry_msgs/msg/PoseArray` as the message type. Participants must guide the UAV to each of these locations with a tolerance of 0.4 meters.
+
+- **Scoring**: 40 points divided by the total number of points to be visited. For example, if there are 10 points, each visited point will earn 4 points.
+
+### 2. Accurate Object Count (20 Points)
+
+During the UAV's flight, objects will be visible on the camera feed available on the `/camera` topic. The participant's task is to count the total number of visible objects in the entire search area and publish the count to the `/avader/people_count` topic using `std_msgs/msg/Int32`.
+
+- **Scoring**: 20 points for correctly reporting the total object count.
+
+### 3. Reporting Object Locations (30 Points)
+
+Participants must publish the location of each detected person in the local NED coordinate frame to the `/avader/location_objects` topic. The `local NED` origin is defined as the UAV’s starting position, and object locations should be provided with an accuracy of 0.8 meters. Each object’s position should assume a height of `Z = 0`.
+
+- **Scoring**: 30 points divided by the total number of objects; for example, if there are 6 objects, each correctly reported location will award 5 points.
+
+### 4. Flight Time (10 Points)
+
+Faster completion times are rewarded, with a maximum flight time of 180 seconds to complete the mission. Points for flight time are awarded as follows:
+
+\[
+\text{Time Points} = 10 \times \left(1 - \frac{\text{participant\_time} - \text{min\_time}}{\text{max\_time} - \text{min\_time}}\right)
+\]
+
+where:
+- **participant_time**: Time taken by the participant to complete the task
+- **min_time**: Minimum allowed time
+- **max_time**: Maximum allowed time (180 seconds)
+
+## UAV Control and Available Topics
+
+- **Drone Control**: Participants control the UAV by publishing global positions to the `/avader/trajectory_setpoint` topic using the `px4_msgs/msg/TrajectorySetpoint` message type.
+- **Camera**: The camera feed is available on the `/camera` topic, and camera parameters are accessible on the `/camera_info` topic.
+
+- **Camera pose**: `<pose>0.12 0 0.242 0 1.57 0</pose>` specify the camera's positional offset from the drone in the local NED frame.
+
+---
+
+
+This repository contains a Docker environment with ROS 2 Humble, Gazebo Harmonic, and PX4, providing an out-of-the-box setup for UAV simulations.
+
+## Requirements
 
 - [Docker](https://docs.docker.com/engine/install/ubuntu/)
-- [Nvidia Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#container-device-interface-cdi-support)
-- [VS Code devcontainer plugin](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container)
+- [NVIDIA Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#container-device-interface-cdi-support)
+- [VS Code Dev Containers Plugin](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container)
 
-> [!IMPORTANT]  
-> System operacyjnym Ubuntu jest wymagany ze względu na obsługę GUI (wymaga innego podejścia przy wykorzystaniu Windowsa).
+> **Important**  
+> The recommended operating system is Ubuntu for full GUI support. Running on Windows requires a different configuration approach.
 
-## Pierwsze uruchomienie
+## Initial Setup
 
-Otwórz VS Code w katalogu z projektem.
-Przejdź do lewego dolnego rogu i kliknij niebieską ikonę z dwiema strzałkami skierowanymi do siebie. Z rozwijanego menu wybierz **"Open Folder in Container... ”** i poczekaj, aż docker się zbuduje. Może to potrwać do 10 minut przy wolniejszym połączeniu internetowym.
+1. Open VS Code in the project directory.
+2. In the lower left corner, click the blue icon with two arrows pointing toward each other.
+3. Select **"Open Folder in Container..."** from the dropdown menu and wait for Docker to build the container. (This may take up to 10 minutes with slower internet connections.)
 
-> [!TIP]
-> Dla osób korzystających z Windowsa oraz WSL 2 przygotowano `Dockerfile.windows` oraz `compose.windows.yaml`. 
+> **Tip**  
+> For Windows users with WSL 2, use the `Dockerfile.windows` and `compose.windows.yaml` files.
 
+After the container builds, run the following commands:
 
-Run:
-```
+```bash
 cd ..
 sudo ./setup.sh
 ./build.sh
 source install/setup.bash
 ```
-Powyższe komendy zbudują Twoją przestrzeń roboczą. Następnie przejdź do katalogu PX4, aby zbudować oprogramowanie w wersji SITL (ang. *Software in the loop*).
-``` bash
-cd ~/PX4-Autopilot
-make px4_sitl gz_x500
+Run the challenge:
+```bash
+cd ~/ros2_ws
+ros2 launch avader x500.launch.py
 ```
-Po wywołaniu powyższych komend powinno pojawić się okno symulatora Gazebo z dodanym dronem.
-
-> [!NOTE]
-> Chcąc uruchomić symulację drona w Gazebo należy za każdym razem użyć polecenia `make px4_sitl gz_x500`.
-
-Po uruchomieniu symulacji, otwórz nowy terminal i wykonaj:
-``` bash
-# ten krok mozna takze dodac do pliku ROS launch
-ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
-```
-
-W celu sprawdzenia dostępnych topiców, w nowym oknie terminala wykonaj:
-``` bash
-ros2 topic list
-```
-Teraz możesz sprawdzić i subskrybować wszystkie topici od drona.
-
-
-Po zalogowaniu się do dockera będzie on działał w sposób podobny do uruchamiania ROS na komputerze hosta. Wszystkie aplikacje GUI będą korzystać z domyślnego menedżera okien hosta, będziesz mieć również dostęp do wszystkich urządzeń na hoście, a także akceleracji GPU.
-Docker ma preinstalowany [ROS 2 Humble](https://docs.ros.org/en/humble/Tutorials.html) i większość potrzebnych zależności oraz symulator [Gazebo Harmonic](https://gazebosim.org/docs/harmonic/getstarted/).
-
-## Pierwsze kroki
-
-Dla osób, które nie miały doczynienia ze środowiskiem ROS 2 + Gazebo, zachęcam do przerobienia tutorialu: [Gazebo Tutorial](https://gazebosim.org/docs/harmonic/tutorials/). Pozwoli to zaznajomić się z tym środowiskiem i tworzyć w przyszłości zaawansowane symulacje.
-
-Następnie pomocne będzie odpowiednia kontrola robotami w środowisku symulacyjnym, na dobry start proszę zaznajomić się z repozytorium: [Gazebo ROS 2 Control](https://github.com/ros-controls/gz_ros2_control/).
-
-Na sam koniec pewnym podsumowaniem, a także praktycznym podejściem do tematu jest dostarczony od [Husariona](https://husarion.com/tutorials/ros2-tutorials/1-ros2-introduction/) tutorial dla ich kilku robotów.
-
-> [!IMPORTANT] 
-Należy pamiętać, aby po zbudowaniu wywołać komendę lub pracować w nowym terminalu:
->
-> ```bash
-> source ~/.bashrc
-> ```
->
-> W tym pliku dodane są już dwie ważne ścieżki:
->
-> ```bash
-> /opt/ros/$ROS_DISTRO/setup.bash
-> /home/developer/ros2_ws/install/setup.bash
-> ```
-
-## Uruchomienie lotu drona po kwadracie
-1. Zbuduj obszar roboczy wywołując: ./build.sh w localization ~/ros2_ws.
-2. Następnie: source install/setup.bash
-3. Uruchom lot drona po kwadracie wywołując polecenie: ros2 launch simple_flight x500.launch.py
-
-
-## Dodatkowe materiały
-* [Getting Started](getting_started.md)
-* [ROS 2 Command Cheat Sheet](cheatsheet.md)
-* [ROS 2 Example packages in Python](example.md)
-* [Bridge communication between ROS and Gazebo](ros_gz_bridge.md)

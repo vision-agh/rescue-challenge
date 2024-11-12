@@ -32,9 +32,9 @@ Participants must publish the location of each detected person in the local NED 
 
 Faster completion times are rewarded, with a maximum flight time of 180 seconds to complete the mission. Points for flight time are awarded as follows:
 
-\[
-\text{Time Points} = 10 \times \left(1 - \frac{\text{participant\_time} - \text{min\_time}}{\text{max\_time} - \text{min\_time}}\right)
-\]
+$
+\text{time points} = 10 \times \left(1 - \frac{\text{participant\_time} - \text{min\_time}}{\text{max\_time} - \text{min\_time}}\right)
+$
 
 where:
 - **participant_time**: Time taken by the participant to complete the task
@@ -42,8 +42,12 @@ where:
 - **max_time**: Maximum allowed time (180 seconds)
 
 ## UAV Control and Available Topics
+- **Challenge Start**: On the topic `/avader/challenge_start`, a True variable of DataType Bool will be published when the challenge starts, indicating that the participant can control the UAV.
 
 - **Drone Control**: Participants control the UAV by publishing global positions to the `/avader/trajectory_setpoint` topic using the `px4_msgs/msg/TrajectorySetpoint` message type.
+
+- **Drone Position**: Position of UAV can be listened on the topic `/fmu/out/vehicle_local_position`.
+
 - **Camera**: The camera feed is available on the `/camera` topic, and camera parameters are accessible on the `/camera_info` topic.
 
 - **Camera pose**: `<pose>0.12 0 0.242 0 1.57 0</pose>` specify the camera's positional offset from the drone in the local NED frame.

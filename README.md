@@ -38,7 +38,7 @@ $`
 
 where:
 - **participant_time**: Time taken by the participant to complete the task
-- **min_time**: Minimum allowed time
+- **min_time**: Minimum allowed time (10 seconds)
 - **max_time**: Maximum allowed time (180 seconds)
 
 ## UAV Control and Available Topics

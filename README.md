@@ -32,9 +32,9 @@ Participants must publish the location of each detected person in the local NED 
 
 Faster completion times are rewarded, with a maximum flight time of 180 seconds to complete the mission. Points for flight time are awarded as follows:
 
-$
+$`
 \text{time points} = 10 \times \left(1 - \frac{\text{participant\_time} - \text{min\_time}}{\text{max\_time} - \text{min\_time}}\right)
-$
+`$
 
 where:
 - **participant_time**: Time taken by the participant to complete the task

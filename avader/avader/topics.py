@@ -136,7 +136,18 @@ class TopicsNode:
 
 
     def publish_locations_to_visit(self, msg):
-        self.locations_publisher.publish(msg)
+        pose_array = PoseArray()
+        pose_array.header.stamp = self.node.get_clock().now().to_msg()
+        pose_array.header.frame_id = 'map'
+
+        for loc in msg:
+            pose = Pose()
+            pose.position.x = float(loc[0])
+            pose.position.y = float(loc[1])
+            pose.position.z = float(loc[2])
+            pose_array.poses.append(pose)
+
+        self.locations_publisher.publish(pose_array)
 
 
     def points_1_publish(self, msg):

@@ -30,6 +30,7 @@ class Destination(Node):
                     self.visited_flags[i] = True
         points = 40 / len(self.locations_to_visit) * sum(self.visited_flags)
         self.topics.points_1_publish(points)
+        self.topics.publish_locations_to_visit(self.locations_to_visit)
 
     def is_within_distance(self, uav_position, location, threshold):
         distance = sqrt(

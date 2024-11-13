@@ -1,9 +1,9 @@
 import os
-from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch.actions import ExecuteProcess, IncludeLaunchDescription, DeclareLaunchArgument, SetEnvironmentVariable
+from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch import LaunchDescription
+from ament_index_python.packages import get_package_share_directory as FindPackageShare
 
 def generate_launch_description():
     env = {
@@ -64,6 +64,13 @@ def generate_launch_description():
         output='screen'
     )
 
+    tasks_solver_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            FindPackageShare('solver'),
+            '/launch/tasks_solver.launch.py'
+        ])
+    )
+
     return LaunchDescription([
         px4_sitl,
         micro_ros_agent,
@@ -71,5 +78,6 @@ def generate_launch_description():
         hover_start,
         avader_camera,
         task_1,
-        task_2
+        task_2,
+        tasks_solver_launch
     ])

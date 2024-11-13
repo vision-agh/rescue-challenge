@@ -49,13 +49,13 @@ where:
 
 - **Drone Position**: Position of UAV can be listened on the topic `/fmu/out/vehicle_local_position`.
 
-- **Camera**: The camera feed is available on the `/camera` topic, and camera parameters are accessible on the `/camera_info` topic.
+- **Camera**: The camera feed is available on the `/camera` topic, and camera parameters are accessible on the `/camera_info` topic. `<pose>0.12 0 -0.242 0 1.57 0</pose>` specify the camera's positional offset from the drone in the local NED frame.
 
-- **Camera pose**: `<pose>0.12 0 0.242 0 1.57 0</pose>` specify the camera's positional offset from the drone in the local NED frame.
-
-- **DO NOT edit avader package.** You should only edit solver package.
-
+- **Objects conting**: Localization of each individials should be published on `/avader/people_locations` topic using the `geometry_msgs/Pose` in the local NED. Location of every person should be published only once, in other case points will not be scored.
 ---
+
+> **Important**  
+> **DO NOT edit avader package.** You should only edit solver package.
 
 
 This repository contains a Docker environment with ROS 2 Humble, Gazebo Harmonic, and PX4, providing an out-of-the-box setup for UAV simulations.

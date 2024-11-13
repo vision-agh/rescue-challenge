@@ -41,6 +41,7 @@ where:
 - **min_time**: Minimum allowed time (10 seconds)
 - **max_time**: Maximum allowed time (180 seconds)
 
+
 ## UAV Control and Available Topics
 - **Challenge Start**: On the topic `/avader/challenge_start`, a True variable of DataType Bool will be published when the challenge starts, indicating that the participant can control the UAV.
 
@@ -51,6 +52,8 @@ where:
 - **Camera**: The camera feed is available on the `/camera` topic, and camera parameters are accessible on the `/camera_info` topic.
 
 - **Camera pose**: `<pose>0.12 0 0.242 0 1.57 0</pose>` specify the camera's positional offset from the drone in the local NED frame.
+
+- **DO NOT edit avader package.** You should only edit solver package.
 
 ---
 

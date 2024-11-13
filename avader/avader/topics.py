@@ -30,6 +30,7 @@ class TopicsNode:
         self._last_task_2_msg = None
         self._last_task_3_msg = None
         self._uav_position = None
+        self._last_people_loc = None
         
         # Subscriptions
         self.camera_subscription = self.node.create_subscription( Image, '/camera', self.camera_callback, 10)
@@ -37,6 +38,7 @@ class TopicsNode:
         self.uav_control_subscription = self.node.create_subscription(TrajectorySetpoint, '/avader/trajectory_setpoint', self.uav_control_callback, 10)
         self.people_count_subscription = self.node.create_subscription(Int32, '/avader/people_count', self.people_count_callback, 10)
         self.uav_position = self.node.create_subscription(VehicleLocalPosition, '/fmu/out/vehicle_local_position', self.vehicle_position_callback, qos_profile)
+        self.people_loc_subscription = self.node.create_subscription(Pose, '/avader/people_locations', self.people_loc_callback, 10)
 
         self.task_1_subscription = self.node.create_subscription(Float32, '/avader/_task_1_points', self.task_1_callback, 10)
         self.task_2_subscription = self.node.create_subscription(Float32, '/avader/_task_2_points', self.task_2_callback, 10)
@@ -88,11 +90,14 @@ class TopicsNode:
     def vehicle_position_callback(self, msg):
         self._uav_position = msg
 
+    
+    def people_loc_callback(self, msg):
+        self._last_people_loc = msg
+
 
     """
     Subscribers
-    """
-        
+    """     
     def get_camera(self):
         return self._last_camera_msg
 
@@ -120,8 +125,13 @@ class TopicsNode:
     def get_task_3(self):
         return self._last_task_3_msg
 
+
     def get_uav_position(self):
         return self._uav_position
+    
+
+    def get_people_loc(self):
+        return self._last_people_loc
 
 
     """
@@ -164,5 +174,5 @@ class TopicsNode:
 
     def points_3_publish(self, msg):
         var = Float32()
-        var.data = msg
+        var.data = float(msg)
         self.points_3_publisher.publish(var)

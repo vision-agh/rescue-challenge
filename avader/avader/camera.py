@@ -11,8 +11,8 @@ from avader.topics import TopicsNode
 class CameraNode(Node):
     def __init__(self):
         super().__init__('camera_node')
-        self.MAX_TIME = 15
-        self.MIN_TIME = 5
+        self.MAX_TIME = 180
+        self.MIN_TIME = 10
         self.all_points = 0.0
         self.topics = TopicsNode(self)
         self.timer = self.create_timer(1.0 / 30.0, self.main_loop)
@@ -77,7 +77,11 @@ class CameraNode(Node):
         # TASK 3
         points = self.topics.get_task_3()
         if points is not None:
-            self.all_points += points.data
+            if points.data !=0:
+                self.all_points += points.data
+                frame = cv2.putText(frame, f"Task 3: {points.data if points is not None else 0.0}/30", (20, frame.shape[0]-20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+            else:
+                frame = cv2.putText(frame, f"Task 3: {points.data if points is not None else 0.0}/30", (20, frame.shape[0]-20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
         else:
             frame = cv2.putText(frame, "Task 3 not completed", (20, frame.shape[0]-20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
         
@@ -142,7 +146,8 @@ class CameraNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     camera_node = CameraNode()
-    rclpy.spin(camera_node)
+    while rclpy.ok():
+        rclpy.spin_once(camera_node)
     camera_node.destroy_node()
     rclpy.shutdown()
 

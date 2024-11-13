@@ -3,6 +3,8 @@ from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch import LaunchDescription
+from launch.event_handlers import OnProcessExit
+from launch.actions import RegisterEventHandler
 from ament_index_python.packages import get_package_share_directory as FindPackageShare
 
 def generate_launch_description():
@@ -64,12 +66,20 @@ def generate_launch_description():
         output='screen'
     )
 
+    task_3 = Node(
+        package='avader',
+        executable='task_3',
+        name='task_3',
+        output='screen'
+    )
+
     tasks_solver_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             FindPackageShare('solver'),
             '/launch/tasks_solver.launch.py'
         ])
     )
+
 
     return LaunchDescription([
         px4_sitl,
@@ -79,5 +89,6 @@ def generate_launch_description():
         avader_camera,
         task_1,
         task_2,
+        task_3,
         tasks_solver_launch
     ])

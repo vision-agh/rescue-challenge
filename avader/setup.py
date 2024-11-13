@@ -27,7 +27,7 @@ setup(
             'camera = avader.camera:main',
             'task_1 = avader.task_1:main',
             'task_2 = avader.task_2:main',
-
+            'task_3 = avader.task_3:main',
         ],
     },
 )

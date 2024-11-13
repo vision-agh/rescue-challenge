@@ -17,8 +17,11 @@ class Destination(Node):
         self.timer = self.create_timer(1.0 / 30.0, self.timer_callback)
 
         self.locations_to_visit = [
-            (0, 0, -5),
-            (10, 10, -5)
+            (13, 20, -9),
+            (-19.5, 10, -8.6),
+            (16, -18.5, -13),
+            (-20, -20, -11),
+            (2, 3, -5.5)
         ]
         self.visited_flags = [False] * len(self.locations_to_visit)
 

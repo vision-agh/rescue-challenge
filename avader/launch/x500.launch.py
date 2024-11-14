@@ -13,11 +13,11 @@ def generate_launch_description():
         'PX4_SYS_AUTOSTART': '4010',
         'PX4_GZ_WORLD': 'lake_boats',
         'PX4_GZ_MODEL_POSE': '0,0,1',
-        'PX4_SIM_MODEL': 'gz_x500_mono_cam'
+        'PX4_GZ_MODEL': 'gz_x500_mono_cam'
     }
 
     px4_sitl = ExecuteProcess(
-        cmd=['make', 'px4_sitl', 'gz_x500_mono_cam'],
+        cmd=['./build/px4_sitl_default/bin/px4'],
         cwd=os.path.expanduser('~/PX4-Autopilot'),
         output='screen',
         additional_env=env

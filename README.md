@@ -96,3 +96,16 @@ Run the challenge:
 ```bash
 ros2 launch avader x500.launch.py
 ```
+
+## Troubleshooting
+
+### Gazebo GUI is not appearing
+Terminal correctly starts and launches PX4 but **Gazebo GUI is not showing**:
+```bash
+ps aux | gerp gz
+```
+If there is more than one develop+ task then you have to kill it manually:
+```bash
+kill -9 <PID>
+```
+```<PID>``` - you have to replace with the number next to the develop+, it is second parameter from left eg. 9378.

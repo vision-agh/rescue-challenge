@@ -89,7 +89,7 @@ source install/setup.bash
 
 Before first start of the simulation you have tu execute below command. It's needed only before first start.
 ```bash
-cd ~/PX4-Autopilot/ && make px4_sitl gz_x500_mono_cam PX4_GZ_WORLD=lake_boats PX4_SYS_AUTOSTART=4010 PX4_GZ_MODEL_POSE=0,0,1 PX4_GZ_MODEL=gz_x500_mono_cam
+cd ~/PX4-Autopilot/ && make px4_sitl PX4_GZ_WORLD=lake_boats PX4_SYS_AUTOSTART=4010 PX4_GZ_MODEL_POSE=0,0,1 PX4_GZ_MODEL=gz_x500_mono_cam
 ```
 
 Run the challenge:

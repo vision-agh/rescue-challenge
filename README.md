@@ -109,3 +109,10 @@ If there is more than one develop+ task then you have to kill it manually:
 kill -9 <PID>
 ```
 ```<PID>``` - you have to replace with the number next to the develop+, it is second parameter from left eg. 9378.
+
+### Docker does not build
+
+This docker requires nvidia graphics card so if you do not have, you have to edit .devcontainer/compose.yaml file. You have to remove following line:
+```bash
+runtime: nvidia
+```

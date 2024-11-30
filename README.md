@@ -102,7 +102,7 @@ ros2 launch avader x500.launch.py
 ### Gazebo GUI is not appearing
 Terminal correctly starts and launches PX4 but **Gazebo GUI is not showing**:
 ```bash
-ps aux | gerp gz
+ps aux | grep gz
 ```
 If there is more than one develop+ task then you have to kill it manually:
 ```bash

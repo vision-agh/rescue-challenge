@@ -103,7 +103,7 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessStart(
                 target_action=camera_bridge,
-                on_start=[hover_start, avader_camera, task_1]
+                on_start=[hover_start, avader_camera, task_1, task_2, task_3, tasks_solver_launch]
             )
         ),
     ])

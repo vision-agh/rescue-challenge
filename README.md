@@ -69,6 +69,38 @@ This repository contains a Docker environment with ROS 2 Humble, Gazebo Harmonic
 > **Important**  
 > The recommended operating system is Ubuntu for full GUI support. Running on Windows requires a different configuration approach.
 
+## Linux / Ubuntu
+For Linux/Ubuntu systems, use the `.devcontainer` folder, which contains 4 `.yaml` files that differ by version.
+
+- [compose.yaml] - configuration for GPU and building the image from the `Dockerfile` - [Initial Setup](#initial-setup)
+- [compose.nogpu.yaml] - configuration for CPU and building the image from the `Dockerfile` - [Initial Setup](#initial-setup)
+- [compose.image.yaml] - configuration for GPU and running the image from the file - [Docker Image from File](#docker-image-from-file)
+- [compose.image.nogpu.yaml] - configuration for CPU and running the image from the file - [Docker Image from File](#docker-image-from-file)
+
+## Windows
+For Windows systems, use the `.devcontainer_windows` folder, which contains 4 `.yaml` files that differ by version.
+The `.devcontainer` folder should be deleted, and the `.devcontainer_windows` folder should be renamed to `.devcontainer`.
+
+- [compose.yaml] - configuration for GPU and building the image from the `Dockerfile` - [Initial Setup](#initial-setup)
+- [compose.nogpu.yaml] - configuration for CPU and building the image from the `Dockerfile` - [Initial Setup](#initial-setup)
+- [compose.image.yaml] - configuration for GPU and running the image from the file - [Docker Image from File](#docker-image-from-file)
+- [compose.image.nogpu.yaml] - configuration for CPU and running the image from the file - [Docker Image from File](#docker-image-from-file)
+
+## Docker Image from File
+1. Download the file from Google Drive: [Docker Image - Rescue Challenge](https://drive.google.com/file/d/1S4v68ag1vSMfRCMBJmM5XyBAJRgVHzlp/view?usp=sharing).
+2. Run the following command in the terminal, which may take up to 20 minutes:
+```bash
+docker image load < rescue_challenge.tar
+```
+3. In the `devcontainer.json` file, select the appropriate `compose.image*.yaml` file for the `dockerComposeFile` argument.
+4. In the lower left corner, click the blue icon with two arrows pointing toward each other.
+5. Select **"Open Folder in Container..."** from the dropdown menu and wait for Docker to build the container. (This may take up to 10 minutes with slower internet connections.)
+6. Run the following commands:
+```bash
+cd ~/ros2_ws/
+sudo ./setup.sh
+```
+
 ## Initial Setup
 
 1. Open VS Code in the project directory.
@@ -89,10 +121,10 @@ source install/setup.bash
 
 Before first start of the simulation you have tu execute below command. It's needed only before first start.
 ```bash
-cd ~/PX4-Autopilot/ && make px4_sitl PX4_GZ_WORLD=lake_boats PX4_SYS_AUTOSTART=4010 PX4_GZ_MODEL_POSE=0,0,1 PX4_GZ_MODEL=gz_x500_mono_cam
+cd ~/PX4-Autopilot/ && make px4_sitl
 ```
 
-Run the challenge:
+## Run the challenge:
 ```bash
 ros2 launch avader x500.launch.py
 ```

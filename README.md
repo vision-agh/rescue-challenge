@@ -4,40 +4,44 @@
 
 ## About the Challenge
 
-The Lake Rescue Challenge simulates a rescue mission where a UAV (Unmanned Aerial Vehicle) assists search and rescue teams in locating stranded individuals on a lake. Participants must pilot the drone to find people scattered across the mission area and relay their precise locations. Using ROS 2 Humble, participants are tasked with meeting strict criteria for accuracy, speed, and data reporting.
+The Lake Rescue Challenge simulates a rescue mission in which an unmanned aerial vehicle (UAV) assists search and rescue teams in locating stranded people on a lake. 
+Participants must pilot the drone to find people scattered across the mission area and communicate their exact location. 
+Using [ROS 2 Humble](https://docs.ros.org/en/humble/index.html), competitors must meet strict criteria for accuracy, speed and data reporting.
 
 ## Scoring System
 
-The maximum achievable score is **100 points**. Points are awarded based on the following four criteria:
+The maximum achievable score is **100 points**. 
+Points are awarded according to the following criteria:
 
 ### 1. Number of Points Visited (40 Points)
 
-Coordinates of target points in 3D space will be published on the `/avader/locations_to_visit` topic with `geometry_msgs/msg/PoseArray` as the message type. Participants must guide the UAV to each of these locations with a tolerance of 0.4 meters.
+The coordinates of the target points in 3D space will be published on the `/avader/locations_to_visit` topic with `geometry_msgs/msg/PoseArray` as the message type. 
+Participants must guide the UAV to each of these locations with a tolerance of 0.4 metres.
 
 - **Scoring**: 40 points divided by the total number of points to be visited. For example, if there are 10 points, each visited point will earn 4 points.
 
 ### 2. Accurate Object Count (20 Points)
 
-During the UAV's flight, objects will be visible on the camera feed available on the `/camera` topic. The participant's task is to count the total number of visible objects in the entire search area and publish the count to the `/avader/people_count` topic using `std_msgs/msg/Int32`.
+During the flight of the UAV, objects will be visible in the camera feed available on the `/camera` topic. The participant's task is to count the total number of visible objects in the entire search area and publish the count to the `/avader/people_count` topic using `std_msgs/msg/Int32`.
 
 - **Scoring**: 20 points for correctly reporting the total object count.
 
 ### 3. Reporting Object Locations (30 Points)
 
-Participants must publish the location of each detected person in the local NED coordinate frame to the `/avader/location_objects` topic. The `local NED` origin is defined as the UAV’s starting position, and object locations should be provided with an accuracy of 0.8 meters. Each object’s position should assume a height of `Z = 0`.
+Participants must publish the location of each detected person in the local NED coordinate frame to the `/avader/location_objects` topic. The `local NED` origin is defined as the start position of the UAV, and object locations should be provided with an accuracy of 0.8 metres. The position of each object should have a height `Z = 0`.
 
 - **Scoring**: 30 points divided by the total number of objects; for example, if there are 6 objects, each correctly reported location will award 5 points.
 
 ### 4. Flight Time (10 Points)
 
-Faster completion times are rewarded, with a maximum flight time of 180 seconds to complete the mission. Points for flight time are awarded as follows:
+Faster completion times are rewarded, with a maximum flight time of 180 seconds to complete the mission. Flight time points are awarded as follows
 
 $`
-\text{time points} = 10 \times \left(1 - \frac{\text{participant\_time} - \text{min\_time}}{\text{max\_time} - \text{min\_time}}\right)
+\text{time points} = 10 \times \left(1 - \frac{\text{team\_time} - \text{min\_time}}{\text{max\_time} - \text{min\_time}}\right)
 `$
 
 where:
-- **participant_time**: Time taken by the participant to complete the task
+- **team_time**: Time taken by the team to complete the task
 - **min_time**: Minimum allowed time (10 seconds)
 - **max_time**: Maximum allowed time (180 seconds)
 
